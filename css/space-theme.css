@@ -1,0 +1,569 @@
+/* ══════════════════════════════════════════════════════════════
+   SPACE THEME — Stars · Meteors · Parallax
+   No planet/moon — pure CSS + tiny JS CSS-var parallax
+   رحلة التعافي — v3
+══════════════════════════════════════════════════════════════ */
+
+/* ── CSS vars for mouse parallax (set by app.js) ── */
+:root {
+  --mx: 0;
+  --my: 0;
+}
+
+/* ──────────────────────────────────────────────
+   1. DEEP SPACE BODY
+────────────────────────────────────────────── */
+body {
+  background:
+    radial-gradient(ellipse 160% 80% at 50% -10%,
+      rgba(6, 18, 55, 0.90) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 50% at 20% 110%,
+      rgba(3, 10, 35, 0.70) 0%, transparent 55%),
+    linear-gradient(180deg,
+      #010820 0%,
+      #010d28 25%,
+      #020e30 55%,
+      #010c24 80%,
+      #010618 100%)
+    fixed;
+  background-attachment: fixed;
+}
+
+/* ──────────────────────────────────────────────
+   2. SPACE SCENE CONTAINER
+────────────────────────────────────────────── */
+#space-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────────────
+   3. STAR LAYER — FAR (tiny, slow parallax)
+   30 dots · 0.5px · tile 500×350
+────────────────────────────────────────────── */
+.space-stars-far {
+  position: absolute;
+  inset: -80px;
+  will-change: transform;
+  transition: transform 1.2s cubic-bezier(.2, 0, .05, 1);
+  transform: translate(calc(var(--mx) * 7px), calc(var(--my) * 5px));
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.52) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.38) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.60) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.33) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.48) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.44) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.56) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.36) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.58) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.40) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.50) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.54) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.36) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.46) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.58) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.34) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.50) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.42) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.56) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.38) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.52) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.46) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.60) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.35) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.48) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.42) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.55) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.38) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.58) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(255,255,255,.33) 0.5px, transparent 0.5px);
+  background-size: 500px 350px;
+  background-position:
+    14px 28px,   67px 8px,    112px 55px,  178px 18px,  256px 72px,
+    334px 22px,  401px 48px,  462px 15px,  35px 98px,   89px 124px,
+    145px 87px,  223px 110px, 312px 95px,  389px 118px, 445px 80px,
+    22px 168px,  95px 152px,  167px 195px, 245px 175px, 323px 160px,
+    405px 188px, 478px 170px, 55px 238px,  134px 225px, 212px 265px,
+    290px 248px, 368px 232px, 445px 260px, 498px 215px, 12px 312px;
+}
+
+/* ──────────────────────────────────────────────
+   4. STAR LAYER — NEAR (medium, faster parallax)
+   40 dots · 1px · tile 700×500
+────────────────────────────────────────────── */
+.space-stars-near {
+  position: absolute;
+  inset: -80px;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(.2, 0, .05, 1);
+  transform: translate(calc(var(--mx) * 16px), calc(var(--my) * 11px));
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.82) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.75) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.58) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.85) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.60) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.78) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.88) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.62) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.72) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.80) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.58) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.76) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.68) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.84) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.78) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.82) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.60) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.75) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.58) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.85) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.70) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.80) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.88) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.82) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.60) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.76) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.58) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.84) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.70) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.78) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.88) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.82) 1px, transparent 1px);
+  background-size: 700px 500px;
+  background-position:
+    30px 55px,   112px 22px,  234px 78px,  356px 18px,  478px 60px,
+    600px 45px,  55px 155px,  178px 188px, 300px 145px, 422px 172px,
+    544px 130px, 666px 165px, 80px 265px,  202px 242px, 324px 290px,
+    446px 248px, 568px 275px, 20px 355px,  145px 325px, 267px 380px,
+    389px 342px, 511px 368px, 633px 330px, 95px 440px,  220px 465px,
+    345px 435px, 470px 458px, 595px 420px, 680px 470px, 160px 490px,
+    285px 130px, 410px 95px,  535px 200px, 660px 240px, 50px 200px,
+    175px 310px, 300px 400px, 425px 480px, 550px 60px,  675px 370px;
+}
+
+/* ──────────────────────────────────────────────
+   5. STAR LAYER — BRIGHT (closest, strongest parallax + halos)
+   15 stars · 2px + glow · tile 900×650
+────────────────────────────────────────────── */
+.space-stars-bright {
+  position: absolute;
+  inset: -80px;
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(.2, 0, .05, 1);
+  transform: translate(calc(var(--mx) * 26px), calc(var(--my) * 18px));
+  background-image:
+    radial-gradient(circle, #fff 1.8px, rgba(180,218,255,.22) 4.5px, transparent 8px),
+    radial-gradient(circle, rgba(222,240,255,.95) 1.5px, rgba(175,212,255,.18) 4px, transparent 7px),
+    radial-gradient(circle, #fff 2px,   rgba(185,220,255,.20) 5px,   transparent 9px),
+    radial-gradient(circle, rgba(212,234,255,.92) 1.5px, rgba(180,215,255,.16) 4px, transparent 7px),
+    radial-gradient(circle, #fff 2px,   rgba(190,222,255,.22) 5px,   transparent 9px),
+    radial-gradient(circle, rgba(226,244,255,.90) 1.5px, rgba(192,220,255,.18) 4px, transparent 7px),
+    radial-gradient(circle, #fff 2px,   rgba(200,228,255,.20) 5px,   transparent 9px),
+    radial-gradient(circle, rgba(216,236,255,.88) 1.5px, rgba(186,216,255,.16) 4px, transparent 7px),
+    radial-gradient(circle, #fff 2px,   rgba(184,218,255,.22) 5px,   transparent 9px),
+    radial-gradient(circle, rgba(224,242,255,.92) 1.5px, rgba(194,222,255,.18) 4px, transparent 7px),
+    radial-gradient(circle, #fff 1.8px, rgba(196,226,255,.20) 4.5px, transparent 8px),
+    radial-gradient(circle, rgba(220,240,255,.95) 2px,   rgba(190,220,255,.20) 5px, transparent 9px),
+    radial-gradient(circle, #fff 1.5px, rgba(200,228,255,.18) 4px,   transparent 7px),
+    radial-gradient(circle, rgba(214,236,255,.88) 2px,   rgba(186,216,255,.16) 5px, transparent 9px),
+    radial-gradient(circle, #fff 1.8px, rgba(194,224,255,.22) 4.5px, transparent 8px);
+  background-size: 900px 650px;
+  background-position:
+    120px 80px,  340px 40px,  560px 110px, 780px 55px,  850px 185px,
+    80px 285px,  260px 345px, 480px 295px, 700px 365px, 820px 285px,
+    50px 485px,  200px 535px, 420px 495px, 640px 555px, 760px 485px;
+}
+
+/* ──────────────────────────────────────────────
+   6. TWINKLE ANIMATIONS
+────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .space-stars-far {
+    animation: twinkle-base 14s ease-in-out infinite alternate;
+  }
+  .space-stars-near {
+    animation: twinkle-base 9s ease-in-out 2.5s infinite alternate-reverse;
+  }
+  .space-stars-bright {
+    animation: twinkle-bright 5.5s ease-in-out infinite alternate;
+  }
+}
+/* Combined parallax + twinkle: use animation-name + keep transform via CSS vars */
+@media (prefers-reduced-motion: no-preference) {
+  .space-stars-far {
+    animation: twinkle-base 14s ease-in-out infinite alternate;
+    /* Transform is set by JS-updated CSS vars; animation only affects opacity */
+  }
+}
+@keyframes twinkle-base {
+  from { opacity: 0.55; }
+  to   { opacity: 1.00; }
+}
+@keyframes twinkle-bright {
+  0%   { opacity: 0.62; }
+  30%  { opacity: 1.00; }
+  65%  { opacity: 0.78; }
+  100% { opacity: 1.00; }
+}
+
+/* Mobile auto-drift (no mouse available) */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .space-stars-far {
+    animation: twinkle-base 14s ease-in-out infinite alternate,
+               auto-drift-a 70s ease-in-out infinite alternate;
+    transform: none !important;
+  }
+  .space-stars-near {
+    animation: twinkle-base 9s ease-in-out 2.5s infinite alternate-reverse,
+               auto-drift-b 50s ease-in-out infinite alternate-reverse;
+    transform: none !important;
+  }
+  .space-stars-bright {
+    animation: twinkle-bright 5.5s ease-in-out infinite alternate,
+               auto-drift-c 35s ease-in-out infinite alternate;
+    transform: none !important;
+  }
+}
+@keyframes auto-drift-a {
+  from { transform: translate(-6px, -4px); }
+  to   { transform: translate( 6px,  4px); }
+}
+@keyframes auto-drift-b {
+  from { transform: translate(-14px, -9px); }
+  to   { transform: translate( 14px,  9px); }
+}
+@keyframes auto-drift-c {
+  from { transform: translate(-22px, -15px); }
+  to   { transform: translate( 22px,  15px); }
+}
+
+/* ──────────────────────────────────────────────
+   7. NEBULA — Color Depth Clouds
+────────────────────────────────────────────── */
+.space-nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at  8% 62%, rgba(40, 100, 255, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 42% 55% at 92% 12%, rgba(120,  60, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 38% 28% at 48% 100%,rgba(30, 180, 140, 0.05) 0%, transparent 58%),
+    radial-gradient(ellipse 28% 44% at 70%  46%, rgba(40, 100, 255, 0.05) 0%, transparent 58%),
+    radial-gradient(ellipse 60% 22% at -5%  25%, rgba(22,  65, 210, 0.07) 0%, transparent 52%);
+}
+
+/* ──────────────────────────────────────────────
+   8. METEORS / SHOOTING STARS
+   5 elements · CSS animation · no JS
+────────────────────────────────────────────── */
+.meteor {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  /* Trail: bright head (left side in rotated space) → transparent tail */
+  background: linear-gradient(
+    to right,
+    rgba(200, 238, 255, 0.00) 0%,
+    rgba(170, 220, 255, 0.15) 20%,
+    rgba(200, 235, 255, 0.70) 55%,
+    rgba(220, 245, 255, 0.95) 80%,
+    rgba(255, 255, 255, 1.00) 100%
+  );
+  /* Head dot glow */
+  filter: drop-shadow(0 0 3px rgba(160, 220, 255, 0.9))
+          drop-shadow(0 0 8px rgba(100, 180, 255, 0.5));
+}
+
+/* Animation: rotate then translate in local X → diagonal on screen */
+@keyframes meteor-fly {
+  0%   { opacity: 0; transform: rotate(-38deg) translateX(0); }
+  4%   { opacity: 1; }
+  14%  { opacity: 0.9; }
+  22%  { opacity: 0; transform: rotate(-38deg) translateX(-1300px); }
+  100% { opacity: 0; transform: rotate(-38deg) translateX(-1300px); }
+}
+
+/* Meteor 1 — standard */
+.m1 {
+  width: 200px;
+  height: 1.5px;
+  top: 8%;
+  left: 72%;
+  animation: meteor-fly 11s linear 1s infinite;
+}
+/* Meteor 2 — slightly shorter, delayed */
+.m2 {
+  width: 160px;
+  height: 1.5px;
+  top: 4%;
+  left: 85%;
+  animation: meteor-fly 11s linear 5.5s infinite;
+}
+/* Meteor 3 — longest, slow interval */
+.m3 {
+  width: 240px;
+  height: 2px;
+  top: 20%;
+  left: 91%;
+  animation: meteor-fly 14s linear 9s infinite;
+}
+/* Meteor 4 — medium, different start point */
+.m4 {
+  width: 180px;
+  height: 1.5px;
+  top: 3%;
+  left: 62%;
+  animation: meteor-fly 11s linear 13.5s infinite;
+}
+/* Meteor 5 — thin fast */
+.m5 {
+  width: 140px;
+  height: 1px;
+  top: 14%;
+  left: 78%;
+  animation: meteor-fly 17s linear 3s infinite;
+}
+
+/* ──────────────────────────────────────────────
+   9. PREFERS-REDUCED-MOTION — disable all motion
+────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .space-stars-far,
+  .space-stars-near,
+  .space-stars-bright {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  .meteor { display: none; }
+  .space-nebula { opacity: 0.7; }
+}
+
+/* ──────────────────────────────────────────────
+   10. LAYOUT Z-INDEX — everything above space
+────────────────────────────────────────────── */
+.layout      { position: relative; z-index: 1; }
+.toast       { z-index: 350; }
+.overlay     { z-index: 300; }
+.qh-overlay  { z-index: 310; }
+.pin-overlay { z-index: 310; }
+.qh-fab      { z-index: 260; }
+
+/* ══════════════════════════════════════════════
+   UI COMPONENTS — Space Glass Theme
+══════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────
+   11. SIDEBAR
+────────────────────────────────────────────── */
+.sidebar {
+  background: rgba(1, 3, 14, 0.93);
+  border-left: 1px solid rgba(55, 125, 255, 0.22);
+  backdrop-filter: blur(44px) saturate(1.5);
+}
+.sb-logo {
+  background: linear-gradient(135deg,
+    rgba(50, 118, 255, 0.22) 0%,
+    rgba(115, 65, 255, 0.12) 100%);
+  border-bottom: 1px solid rgba(55, 125, 255, 0.22);
+}
+.nav-btn {
+  transition: all 0.24s cubic-bezier(.4, 0, .2, 1);
+}
+.nav-btn.active {
+  background: linear-gradient(135deg,
+    rgba(50, 122, 255, 0.28) 0%,
+    rgba(125, 70, 255, 0.18) 100%);
+  border: 1px solid rgba(65, 138, 255, 0.50);
+  color: #84c2ff;
+  box-shadow:
+    0 0 16px rgba(55, 125, 255, 0.30),
+    inset 0 0 18px rgba(55, 125, 255, 0.07);
+}
+.nav-btn:hover:not(.active) {
+  background: rgba(50, 118, 255, 0.12);
+  color: #c8dcff;
+}
+.bnav {
+  background: rgba(1, 3, 14, 0.96);
+  border-top: 1px solid rgba(55, 125, 255, 0.22);
+  backdrop-filter: blur(44px);
+}
+.bnav-btn.active { color: #84c2ff; }
+
+/* ──────────────────────────────────────────────
+   12. CARDS — Floating Glass Panels
+────────────────────────────────────────────── */
+.card {
+  background: rgba(3, 7, 30, 0.72);
+  border: 1px solid rgba(50, 118, 255, 0.19);
+  box-shadow:
+    0 4px 28px rgba(0, 0, 20, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 0 32px rgba(28, 58, 180, 0.05);
+  backdrop-filter: blur(28px) saturate(1.4);
+  transition:
+    transform    0.36s cubic-bezier(.18, 0, .08, 1),
+    border-color 0.36s ease,
+    box-shadow   0.36s ease,
+    background   0.36s ease;
+}
+.card:hover {
+  background: rgba(5, 11, 42, 0.80);
+  border-color: rgba(65, 142, 255, 0.38);
+  transform: translateY(-6px) scale(1.010);
+  box-shadow:
+    0 20px 54px rgba(0, 0, 28, 0.72),
+    0 0 30px rgba(55, 128, 255, 0.18),
+    0 0 0 1px rgba(65, 142, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    inset 0 0 42px rgba(38, 78, 220, 0.08);
+}
+
+/* ──────────────────────────────────────────────
+   13. HERO SECTION
+────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(145deg,
+    rgba(38, 98, 220, 0.17) 0%,
+    rgba(98, 52, 220, 0.10) 45%,
+    rgba(28, 78, 200, 0.08) 100%);
+  border: 1px solid rgba(65, 142, 255, 0.38);
+  box-shadow:
+    0 0 85px rgba(50, 120, 255, 0.14),
+    0 12px 50px rgba(0, 0, 24, 0.62),
+    inset 0 0 105px rgba(45, 105, 240, 0.06),
+    inset 0 1px 0 rgba(115, 178, 255, 0.16);
+}
+.hero::before {
+  background: radial-gradient(circle, rgba(50, 122, 255, 0.24) 0%, transparent 68%);
+  width: 640px;
+  height: 640px;
+}
+.hero-num {
+  filter:
+    drop-shadow(0 0 20px rgba(75, 158, 255, 0.72))
+    drop-shadow(0 0 50px rgba(45, 118, 255, 0.42));
+  letter-spacing: -3px;
+}
+.hero-lbl {
+  color: rgba(155, 198, 255, 0.88);
+  letter-spacing: 0.8px;
+}
+
+/* ──────────────────────────────────────────────
+   14. STAT CARDS
+────────────────────────────────────────────── */
+.sc {
+  background: rgba(3, 7, 30, 0.72);
+  border-color: rgba(50, 118, 255, 0.19);
+  box-shadow: 0 4px 22px rgba(0, 0, 22, 0.60);
+  transition: all 0.32s cubic-bezier(.18, 0, .08, 1);
+}
+.sc:hover {
+  transform: translateY(-7px) scale(1.012);
+  border-color: rgba(65, 142, 255, 0.36);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 28, 0.70),
+    0 0 24px rgba(50, 120, 255, 0.18);
+}
+
+/* ──────────────────────────────────────────────
+   15. BUTTONS
+────────────────────────────────────────────── */
+.btn { transition: all 0.22s cubic-bezier(.4, 0, .2, 1) !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #1c5cd8 0%, #2264e8 45%, #1c52c4 100%) !important;
+  border-color: rgba(75, 148, 255, 0.48) !important;
+  box-shadow: 0 3px 16px rgba(35, 98, 220, 0.32) !important;
+  color: #e6f0ff !important;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #2268e2 0%, #2874f4 45%, #2060d6 100%) !important;
+  border-color: rgba(98, 168, 255, 0.62) !important;
+  box-shadow: 0 7px 26px rgba(38, 118, 242, 0.42), 0 0 20px rgba(58, 138, 255, 0.26) !important;
+  transform: translateY(-2px) !important;
+}
+.btn-primary:active { transform: translateY(0) !important; }
+
+.btn:not(.btn-danger):not([class*="muted"]):hover {
+  box-shadow: 0 0 12px rgba(55, 128, 255, 0.20);
+}
+
+/* ──────────────────────────────────────────────
+   16. QUOTE CARD
+────────────────────────────────────────────── */
+.quote-card {
+  background: linear-gradient(135deg,
+    rgba(105, 55, 240, 0.12) 0%,
+    rgba(45, 105, 240, 0.08) 100%);
+  border-color: rgba(115, 75, 255, 0.28);
+  box-shadow:
+    0 4px 28px rgba(0, 0, 24, 0.52),
+    inset 0 0 60px rgba(95, 45, 255, 0.05);
+}
+
+/* ──────────────────────────────────────────────
+   17. FORM INPUTS
+────────────────────────────────────────────── */
+.fi, .fs, .ft {
+  background: rgba(2, 6, 26, 0.82);
+  border-color: rgba(50, 118, 255, 0.22);
+}
+.fi:focus, .fs:focus, .ft:focus {
+  border-color: rgba(65, 142, 255, 0.70);
+  box-shadow: 0 0 0 3px rgba(50, 118, 255, 0.18), 0 0 16px rgba(50, 118, 255, 0.10);
+  background: rgba(5, 11, 42, 0.78);
+  outline: none;
+}
+
+/* ──────────────────────────────────────────────
+   18. MISC COMPONENTS
+────────────────────────────────────────────── */
+.d-risk {
+  background: rgba(3, 7, 30, 0.72);
+  border-color: rgba(50, 118, 255, 0.17);
+}
+.d-risk:hover {
+  background: rgba(5, 11, 42, 0.80);
+  border-color: rgba(65, 142, 255, 0.30);
+}
+.week-bar-outer { background: rgba(255, 255, 255, 0.055); }
+.pb-wrap        { background: rgba(255, 255, 255, 0.065); }
+
+/* ══════════════════════════════════════════════
+   MOBILE — Reduce effects on small screens
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .space-stars-far    { opacity: 0.60; }
+  .space-stars-near   { opacity: 0.65; }
+  .space-stars-bright { opacity: 0.70; }
+  .space-nebula       { opacity: 0.65; }
+
+  /* Show only 2 meteors on mobile */
+  .m3, .m4, .m5 { display: none; }
+
+  .card:hover { transform: translateY(-3px) scale(1.005); }
+  .sc:hover   { transform: translateY(-4px) scale(1.008); }
+}
+
+@media (max-width: 480px) {
+  .space-stars-bright { display: none; }
+  .m2 { display: none; }
+}

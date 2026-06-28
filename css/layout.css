@@ -1,0 +1,108 @@
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sw);background:rgba(6,13,46,0.92);
+  backdrop-filter:blur(24px);border-left:1px solid var(--border);
+  position:fixed;top:0;right:0;height:100vh;
+  display:flex;flex-direction:column;z-index:200;
+  padding:0;overflow:hidden;
+}
+.sb-logo{
+  padding:28px 24px 24px;
+  background:linear-gradient(135deg,rgba(79,142,247,.12),rgba(167,139,250,.08));
+  border-bottom:1px solid var(--border);
+}
+.sb-logo h1{
+  font-size:22px;font-weight:900;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.sb-logo p{font-size:12px;color:var(--t3);margin-top:4px}
+.sb-logo .streak-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:12px;background:rgba(67,217,141,.12);
+  border:1px solid rgba(67,217,141,.25);border-radius:100px;
+  padding:5px 12px;font-size:12px;color:var(--green);font-weight:700;
+}
+.nav-list{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;border-radius:12px;cursor:pointer;
+  transition:var(--tr);margin-bottom:4px;color:var(--t2);
+  font-size:14px;font-weight:600;border:none;background:none;
+  width:100%;text-align:right;font-family:'Cairo',sans-serif;
+}
+.nav-btn:hover{background:var(--glass);color:var(--t1)}
+.nav-btn.active{
+  background:linear-gradient(135deg,rgba(79,142,247,.18),rgba(167,139,250,.18));
+  color:var(--blue);border:1px solid rgba(79,142,247,.28);
+}
+.nav-btn i{width:20px;text-align:center;font-size:15px}
+.sb-foot{padding:20px 16px;border-top:1px solid var(--border)}
+.btn-sos-sb{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+  border:none;border-radius:13px;color:#fff;
+  font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;
+  cursor:pointer;transition:var(--tr);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-sos-sb:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,.4)}
+
+/* ── MAIN ── */
+.main{margin-right:var(--sw);flex:1;padding:32px;min-height:100vh}
+
+/* ── SECTIONS ── */
+.sec{display:none}
+.sec.active{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:rgba(6,13,46,.96);backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);z-index:200;
+  padding:8px 0 max(env(safe-area-inset-bottom),8px);
+}
+.bnav-inner{display:flex;justify-content:space-around;align-items:center}
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:6px 10px;color:var(--t3);cursor:pointer;
+  transition:var(--tr);border:none;background:none;font-family:'Cairo',sans-serif;
+}
+.bnav-btn.active{color:var(--blue)}
+.bnav-btn i{font-size:20px}
+.bnav-btn span{font-size:10px;font-weight:600}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+/* ── PAGE HEADER ── */
+.ph{margin-bottom:28px}
+.ph h2{font-size:28px;font-weight:900;margin-bottom:5px}
+.ph p{color:var(--t2);font-size:15px}
+
+/* ── UTILS ── */
+.tg{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tc{color:var(--green)}.tg2{color:var(--gold)}.tr2{color:var(--red)}.tm{color:var(--t3)}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mt32{margin-top:32px}
+.mb16{margin-bottom:16px}.mb24{margin-bottom:24px}
+.fb{display:flex;align-items:center;justify-content:space-between}
+.sec-t{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.sec-t i{color:var(--blue)}
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ── CHIP BUTTONS ── */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{
+  padding:8px 14px;border-radius:100px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--t2);font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:var(--tr);
+}
+.chip:hover{background:var(--glass)}
+.chip.sel{background:rgba(79,142,247,.15);border-color:var(--blue);color:var(--blue)}

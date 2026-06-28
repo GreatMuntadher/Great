@@ -1,0 +1,284 @@
+/* ── RESPONSIVE — رحلة التعافي ── */
+
+/* ── 1100px: collapse wide grids ── */
+@media(max-width:1100px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr 1fr}
+}
+
+/* ── Tablet landscape 769-1024 ── */
+@media(min-width:769px) and (max-width:1024px){
+  .sidebar{width:220px}
+  .main{padding:24px 20px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .hero-num{font-size:80px}
+}
+
+/* ── 768px: switch to mobile layout ── */
+@media(max-width:768px){
+  /* layout */
+  .sidebar{display:none}
+  .bnav{display:block}
+  .main{margin-right:0;padding:20px 16px;padding-bottom:90px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+
+  /* hero */
+  .hero{padding:32px 22px}
+  .hero-num{font-size:72px}
+  .hero p{font-size:13px}
+
+  /* cards */
+  .card{padding:18px}
+
+  /* touch targets */
+  .btn{min-height:44px;padding:12px 20px}
+  .btn-lg{min-height:48px}
+  .nav-btn{min-height:44px;padding:14px 16px}
+  .bnav-btn{min-height:52px;padding:8px 4px}
+  .modal-close{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+
+  /* forms — prevent iOS zoom on focus */
+  .fi,.fs,.ft{font-size:16px;padding:13px 16px;width:100%;box-sizing:border-box}
+  select.fi,select.fs{font-size:16px}
+
+  /* page header */
+  .ph h2{font-size:22px}
+  .ph p{font-size:13px}
+  .ph{padding:0 0 18px}
+
+  /* modals */
+  .modal{padding:28px 18px}
+
+  /* feeling grid */
+  .feeling-grid{grid-template-columns:repeat(4,1fr)}
+
+  /* weekly review */
+  .qh-grid{grid-template-columns:1fr 1fr}
+  .qh-fab{bottom:80px}
+
+  /* quote */
+  .quote-card{padding:28px 20px}
+  .quote-text{font-size:16px}
+
+  /* dashboard today */
+  .dash-today-btns{flex-direction:column}
+  .dash-today-btn{min-height:44px}
+
+  /* challenges day grid: horizontal scroll inside card */
+  .ch-day-grid{
+    overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px
+  }
+  .ch-day{width:14px;height:14px;flex-shrink:0}
+  .ch-stats-row{grid-template-columns:repeat(2,1fr)}
+
+  /* backup */
+  .bk-summary{grid-template-columns:repeat(2,1fr)}
+  .bk-actions{flex-direction:column}
+  .bk-btn{min-width:unset;min-height:44px}
+}
+
+/* ── 600px: small tablets / large phones ── */
+@media(max-width:600px){
+  .dash-ch-stats{grid-template-columns:repeat(2,1fr)}
+  .dash-ch-stat:last-child{grid-column:span 2}
+  .ch-day{width:12px;height:12px}
+}
+
+/* ── 480px: standard phones ── */
+@media(max-width:480px){
+  .main{padding:14px 12px;padding-bottom:88px}
+
+  /* hero */
+  .hero{padding:24px 16px}
+  .hero-num{font-size:56px}
+  .hero p{font-size:12px}
+
+  /* cards */
+  .card{padding:14px 12px;border-radius:18px}
+
+  /* page header */
+  .ph h2{font-size:19px}
+  .ph p{font-size:12px}
+
+  /* forms */
+  .fi,.fs,.ft{border-radius:12px}
+
+  /* buttons */
+  .btn{font-size:13px;border-radius:12px}
+  .btn-lg{font-size:14px;padding:14px 20px}
+
+  /* feeling grid */
+  .feeling-grid{grid-template-columns:repeat(3,1fr)}
+
+  /* tasks */
+  .task-item{padding:12px 10px;min-height:44px}
+  .task-lbl{font-size:13px}
+
+  /* quote */
+  .quote-card{padding:20px 14px;border-radius:20px}
+  .quote-text{font-size:15px;line-height:1.8}
+
+  /* modals */
+  .modal{padding:22px 14px;border-radius:22px}
+  .modal h2{font-size:18px}
+
+  /* challenges */
+  .ch-day{width:11px;height:11px}
+  .dash-ch-stat-val{font-size:18px}
+  .dash-ch-stat-lbl{font-size:10px}
+
+  /* backup */
+  .bk-summary{grid-template-columns:1fr 1fr}
+  .bk-sum-val{font-size:18px}
+  .bk-import-label{padding:16px 12px;font-size:13px}
+  .bk-btn{font-size:13px;padding:12px 14px}
+
+  /* weekly review */
+  .qh-grid{grid-template-columns:1fr}
+
+  /* privacy */
+  .priv-row{flex-direction:column;align-items:flex-start;gap:12px}
+  .toggle-wrap{align-self:flex-end}
+
+  /* recovery lock */
+  .rl-stat{padding:12px 8px}
+  .rl-stat-val{font-size:20px}
+
+  /* day plan */
+  .dp-slot{min-height:44px}
+
+  /* SOS */
+  .sos-step{padding:14px 12px}
+  .sos-num{width:32px;height:32px;font-size:14px}
+}
+
+/* ── 390px: iPhone 14 Pro size ── */
+@media(max-width:390px){
+  .main{padding:12px 10px;padding-bottom:86px}
+  .hero-num{font-size:50px}
+  .hero{padding:20px 14px}
+  .card{padding:12px 10px;border-radius:16px}
+  .ph h2{font-size:18px}
+  .btn{font-size:12px;padding:11px 16px}
+  .quote-text{font-size:14px}
+  .modal{padding:18px 12px}
+  .ch-day{width:10px;height:10px}
+  .bk-sum-val{font-size:16px}
+  .dash-ch-stat-val{font-size:16px}
+  .feeling-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── 380px: slightly smaller ── */
+@media(max-width:380px){
+  .feeling-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── 360px: small Android phones ── */
+@media(max-width:360px){
+  .main{padding:10px 8px;padding-bottom:84px}
+  .hero-num{font-size:44px}
+  .hero{padding:18px 12px}
+  .card{padding:10px 8px;border-radius:14px}
+  .ph h2{font-size:17px}
+  .btn{font-size:12px;padding:10px 14px;min-height:42px}
+  .feeling-grid{grid-template-columns:repeat(2,1fr)}
+  .ch-day{width:9px;height:9px;border-radius:2px}
+  .quote-text{font-size:13px}
+  .modal{padding:16px 10px}
+  .modal h2{font-size:16px}
+  .bnav-btn span{font-size:10px}
+  .dash-ch-stat-val{font-size:15px}
+  .bk-sum-val{font-size:15px}
+}
+
+/* ── Calendar responsive ── */
+@media(max-width:900px){ .cal-sum-grid{ grid-template-columns:repeat(3,1fr); } }
+@media(max-width:600px){
+  .cal-sum-grid{ grid-template-columns:repeat(3,1fr); }
+  .cal-cell{ min-height:40px;border-radius:8px; }
+  .cal-cell-num{ font-size:11px; }
+  .cal-cell-pct{ font-size:9px; }
+  .cal-month-hd{ font-size:15px; }
+}
+@media(max-width:480px){
+  .cal-sum-grid{ grid-template-columns:repeat(2,1fr); }
+  .cal-cell{ min-height:36px;padding:3px 2px; }
+  .cal-cell-icons{ display:none; }
+  .cal-nav{ padding:10px 12px; }
+  .cal-nav-btn{ padding:8px 12px; }
+}
+@media(max-width:360px){
+  .cal-cell{ min-height:30px;border-radius:6px; }
+  .cal-cell-pct{ display:none; }
+  .cal-dname{ font-size:10px; }
+}
+
+/* ── Evaluations responsive ── */
+@media(max-width:600px){
+  .eval-det-stats-row{ grid-template-columns:repeat(3,1fr); }
+  .eval-metric-avg{ font-size:17px; }
+}
+@media(max-width:480px){
+  .eval-period-bar{ gap:6px; }
+  .eval-period-btn{ font-size:12px;padding:7px 12px; }
+  .eval-det-stats-row{ grid-template-columns:repeat(3,1fr); }
+  .eval-metric-name{ font-size:13px; }
+}
+@media(max-width:360px){
+  .eval-det-stats-row{ grid-template-columns:repeat(2,1fr); }
+  .eval-period-btn{ font-size:11px;padding:6px 10px; }
+}
+
+/* ── Challenges page responsive ── */
+@media(max-width:900px){
+  .ch-ps-grid{ grid-template-columns:repeat(3,1fr); }
+}
+@media(max-width:600px){
+  .ch-ps-grid{ grid-template-columns:repeat(3,1fr); }
+  .ch-toolbar{ flex-direction:column;align-items:stretch; }
+  .ch-filters{ justify-content:flex-start; }
+  .ch-sort-sel{ width:100%; }
+  .ch-ph{ flex-direction:column;gap:10px; }
+  .ch-add-btn{ width:100%; }
+}
+@media(max-width:480px){
+  .ch-ps-grid{ grid-template-columns:repeat(3,1fr); }
+  .ch-ps-val{ font-size:18px; }
+  .ch-stats-row{ grid-template-columns:repeat(2,1fr); }
+  .ch-stats-row .ch-stat:last-child:nth-child(odd){ grid-column:span 2; }
+  .ch-actions-primary{ grid-template-columns:1fr; }
+  .ch-card-name{ font-size:15px; }
+  .ch-day{ width:13px;height:13px; }
+  .ch-filter-btn{ font-size:12px;padding:7px 12px; }
+}
+@media(max-width:360px){
+  .ch-ps-grid{ grid-template-columns:repeat(2,1fr); }
+  .ch-day{ width:11px;height:11px; }
+  .ch-stat-val{ font-size:18px; }
+  .ch-card-name{ font-size:14px; }
+}
+
+/* ── Stats page responsive ── */
+@media(max-width:600px){
+  .st-ch-grid{ grid-template-columns:repeat(3,1fr); }
+  .st-ach-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:480px){
+  .st-ch-grid{ grid-template-columns:repeat(3,1fr); }
+  .st-trend-badge{ font-size:12px; }
+}
+@media(max-width:360px){
+  .st-ch-grid{ grid-template-columns:repeat(2,1fr); }
+  .st-ach-grid{ grid-template-columns:repeat(2,1fr); }
+  .st-insight-row{ font-size:12px;padding:10px 12px; }
+}
+
+/* ── Global: prevent horizontal scroll ── */
+html,body{max-width:100%;overflow-x:hidden}
+.main{overflow-x:hidden}
+
+/* ── Touch devices: disable broken hover effects ── */
+@media(hover:none){
+  .card:hover,.sc:hover{transform:none!important;box-shadow:none!important}
+  .btn:hover{opacity:0.9}
+}
