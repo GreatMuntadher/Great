@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#13111e"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#43d98d"/>
+      <stop offset="100%" stop-color="#4f8ef7"/>
+    </linearGradient>
+  </defs>
+  <!-- خلفية دائرية -->
+  <rect width="512" height="512" rx="110" ry="110" fill="url(#bg)"/>
+  <!-- شعلة رمزية للتعافي -->
+  <path d="M256 100 C256 100 180 190 180 270 C180 320 215 370 256 380 C297 370 332 320 332 270 C332 190 256 100 256 100Z" fill="url(#flame)" opacity="0.9"/>
+  <!-- نقطة بيضاء داخلية -->
+  <circle cx="256" cy="290" r="38" fill="white" opacity="0.18"/>
+  <circle cx="256" cy="290" r="18" fill="white" opacity="0.55"/>
+  <!-- خط أفقي تحت الشعلة -->
+  <rect x="176" y="400" width="160" height="12" rx="6" fill="url(#flame)" opacity="0.5"/>
+</svg>
