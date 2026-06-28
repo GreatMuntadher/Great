@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رحلة التعافي</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e1b4b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="رحلة التعافي">
+  <link rel="apple-touch-icon" href="assets/icons/icon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/space-theme.css">
+</head>
+<body>
+
+<!-- Space Background Scene — CSS + minimal JS parallax -->
+<div id="space-scene" aria-hidden="true">
+  <div class="space-stars-far"></div>
+  <div class="space-stars-near"></div>
+  <div class="space-stars-bright"></div>
+  <div class="space-nebula"></div>
+  <div class="meteor m1"></div>
+  <div class="meteor m2"></div>
+  <div class="meteor m3"></div>
+  <div class="meteor m4"></div>
+  <div class="meteor m5"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Quick Hide FAB -->
+<button class="qh-fab" id="qh-fab" onclick="quickHide()" style="display:none"><i class="fas fa-eye-slash"></i>إخفاء</button>
+
+<div class="layout">
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <h1>رحلة التعافي</h1>
+    <p>يومك الأفضل يبدأ الآن</p>
+    <div class="streak-pill"><i class="fas fa-fire"></i><span id="sb-days">0</span> يوم نظيف</div>
+  </div>
+  <nav class="nav-list">
+    <button class="nav-btn active" data-sec="dashboard"><i class="fas fa-home"></i>الرئيسية</button>
+    <button class="nav-btn" data-sec="dayplan"><i class="fas fa-sun"></i>خطة اليوم</button>
+    <button class="nav-btn" data-sec="tasks"><i class="fas fa-clipboard-check"></i>تقييم اليوم</button>
+    <button class="nav-btn" data-sec="timeline"><i class="fas fa-road"></i>مسار الرحلة</button>
+    <button class="nav-btn" data-sec="journal"><i class="fas fa-book-open"></i>السجل اليومي</button>
+    <button class="nav-btn" data-sec="stats"><i class="fas fa-chart-bar"></i>الإحصائيات</button>
+    <button class="nav-btn" data-sec="calendar"><i class="fas fa-calendar-days"></i>الكالندر</button>
+    <button class="nav-btn" data-sec="evaluations"><i class="fas fa-chart-line"></i>التقييمات</button>
+    <button class="nav-btn" data-sec="rules"><i class="fas fa-shield-alt"></i>قوانيني الشخصية</button>
+    <div style="height:1px;background:var(--border);margin:10px 4px"></div>
+    <button class="nav-btn" data-sec="triggers"><i class="fas fa-fire-flame-curved"></i>محفزاتي</button>
+    <button class="nav-btn" data-sec="reasons"><i class="fas fa-heart"></i>لماذا أتعافى؟</button>
+    <button class="nav-btn" data-sec="weeklyreview"><i class="fas fa-calendar-week"></i>مراجعة الأسبوع</button>
+    <button class="nav-btn" data-sec="memoirs"><i class="fas fa-feather-alt"></i>مذكرات التعافي</button>
+    <button class="nav-btn" data-sec="challenges"><i class="fas fa-trophy"></i>التحديات</button>
+    <button class="nav-btn" data-sec="backup"><i class="fas fa-database"></i>النسخ الاحتياطي</button>
+    <button class="nav-btn" data-sec="privacy"><i class="fas fa-user-shield"></i>الخصوصية والتقارير</button>
+  </nav>
+  <div class="sb-foot">
+    <button class="btn btn-ghost btn-full mb12" onclick="openConfig()"><i class="fas fa-cog"></i>الإعدادات</button>
+    <button class="btn-sos-sb" onclick="openSOS()"><i class="fas fa-exclamation-triangle"></i>لدي رغبة قوية الآن</button>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+<!-- ══ DASHBOARD ══ -->
+<section id="dashboard" class="sec active">
+  <div class="ph">
+    <h2 id="greeting">أهلاً بك في يوم جديد من السيطرة</h2>
+    <p id="today-str" class="tm"></p>
+  </div>
+
+  <!-- Hero Counter -->
+  <div class="hero">
+    <div class="hero-num" id="hero-days">0</div>
+    <div class="hero-lbl">يوم نظيف متواصل</div>
+    <div class="hero-btns">
+      <button class="btn btn-green btn-lg" onclick="logClean()"><i class="fas fa-check"></i>سجّل يوم نظيف</button>
+      <button class="btn btn-ghost btn-lg" onclick="openRelapse()"><i class="fas fa-redo"></i>تسجيل انتكاسة</button>
+    </div>
+  </div>
+
+  <!-- Recovery Lock Card -->
+  <div id="dash-recovery-lock"></div>
+
+  <!-- Stats Row -->
+  <div class="g3 mb24">
+    <div class="card">
+      <div class="card-lbl"><i class="fas fa-calendar-star tg"></i>بداية الرحلة</div>
+      <div class="card-val" style="font-size:16px;font-weight:700;" id="start-lbl">—</div>
+      <div class="card-sub">تاريخ القرار الأول</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl"><i class="fas fa-trophy" style="color:var(--gold)"></i>أفضل سلسلة</div>
+      <div class="card-val tg2" id="best-lbl">0</div>
+      <div class="card-sub">أيام متواصلة</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl"><i class="fas fa-fire tc"></i>الالتزام هذا الأسبوع</div>
+      <div class="card-val tc" id="week-rate">0%</div>
+      <div class="card-sub">من مهام الأسبوع</div>
+    </div>
+  </div>
+
+  <!-- ── قسم اليوم ── -->
+  <div id="dash-today-section" class="mb24"></div>
+
+  <!-- ── ملخص التحديات ── -->
+  <div id="dash-challenges-wrap" class="mb24"></div>
+
+  <!-- Risk Card Widget -->
+  <div id="dash-risk-wrap"></div>
+
+  <!-- Weekly Review Card -->
+  <div id="dash-weekly-wrap"></div>
+
+  <!-- Protection Mode Card -->
+  <div id="dash-protection-wrap"></div>
+
+  <!-- Expected Trigger Card -->
+  <div id="dash-expected-trigger"></div>
+
+  <!-- Smart Report Mini Card -->
+  <div id="dash-smart-report"></div>
+
+  <!-- Memoir Card -->
+  <div id="dash-memoir-wrap"></div>
+  <div id="dash-dassess-wrap"></div>
+
+  <!-- Quote -->
+  <div class="quote-card">
+    <div class="quote-icon"><i class="fas fa-quote-right"></i></div>
+    <div class="quote-text" id="quote">...</div>
+  </div>
+
+  <!-- Tasks + SOS -->
+  <div class="g2">
+    <div class="card">
+      <div class="fb mb16">
+        <div class="sec-t" style="margin-bottom:0"><i class="fas fa-tasks"></i>مهام اليوم</div>
+        <span class="tc" style="font-size:18px;font-weight:800;" id="dash-pct">0%</span>
+      </div>
+      <div class="pb-wrap mb16" style="height:8px"><div class="pb-fill" id="dash-pb" style="width:0%"></div></div>
+      <div id="dash-tasks"></div>
+      <div id="dash-protection-tasks"></div>
+      <div id="dash-trigger-tasks"></div>
+      <button class="btn btn-ghost btn-full mt16" onclick="go('tasks')">عرض جميع المهام</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <button class="sos-btn" onclick="openSOS()">
+        <i class="fas fa-exclamation-triangle"></i>لدي رغبة قوية الآن
+      </button>
+      <div class="card" style="flex:1">
+        <div class="sec-t"><i class="fas fa-chart-line"></i>الأسبوع الحالي</div>
+        <div class="week-wrap" id="week-bars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DAY PLAN ══ -->
+<section id="dayplan" class="sec">
+  <div class="ph">
+    <h2>خطة اليوم</h2>
+    <p>ابدأ يومك بوعي وحدد مستوى تحديه مسبقاً</p>
+  </div>
+
+  <div class="g2">
+    <!-- ─ Left column: assessment form ─ -->
+    <div class="card">
+      <div class="sec-t"><i class="fas fa-clipboard-check"></i>تقييم خطورة اليوم</div>
+
+      <div class="fg">
+        <label class="fl">جودة النوم</label>
+        <div class="chip-grid" id="dp-sleep">
+          <button class="chip sel" data-v="good"   onclick="dpChip('dp-sleep',this)">😴 جيد</button>
+          <button class="chip" data-v="medium" onclick="dpChip('dp-sleep',this)">😐 متوسط</button>
+          <button class="chip" data-v="bad"    onclick="dpChip('dp-sleep',this)">😩 سيئ</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">مستوى التوتر الآن (1–5)</label>
+        <div class="slider-row">
+          <input type="range" class="slider" id="dp-stress" min="1" max="5" value="2"
+            oninput="document.getElementById('dp-sv').textContent=this.value">
+          <div class="slider-v" id="dp-sv">2</div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">مستوى الرغبة المتوقع اليوم (1–10)</label>
+        <div class="slider-row">
+          <input type="range" class="slider" id="dp-urge" min="1" max="10" value="3"
+            oninput="document.getElementById('dp-uv').textContent=this.value">
+          <div class="slider-v" id="dp-uv">3</div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">الشعور الحالي</label>
+        <div class="chip-grid" id="dp-mood">
+          <button class="chip sel" data-v="هادئ"  onclick="dpChip('dp-mood',this)">هادئ</button>
+          <button class="chip" data-v="متوتر" onclick="dpChip('dp-mood',this)">متوتر</button>
+          <button class="chip" data-v="حزين"  onclick="dpChip('dp-mood',this)">حزين</button>
+          <button class="chip" data-v="وحيد"  onclick="dpChip('dp-mood',this)">وحيد</button>
+          <button class="chip" data-v="متعب"  onclick="dpChip('dp-mood',this)">متعب</button>
+          <button class="chip" data-v="نشيط"  onclick="dpChip('dp-mood',this)">نشيط</button>
+          <button class="chip" data-v="ملل"   onclick="dpChip('dp-mood',this)">ملل</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">هل ستسهر بعد منتصف الليل؟</label>
+        <div class="radio-row" id="dp-late">
+          <button class="rbtn sel" data-v="false" onclick="pickR('dp-late',this)">لا</button>
+          <button class="rbtn" data-v="true" onclick="pickR('dp-late',this)">نعم</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">هل استخدمت السوشيال ميديا عشوائياً أكثر من ساعتين؟</label>
+        <div class="radio-row" id="dp-social">
+          <button class="rbtn sel" data-v="false" onclick="pickR('dp-social',this)">لا</button>
+          <button class="rbtn" data-v="true" onclick="pickR('dp-social',this)">نعم</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">هل دخل الهاتف إلى السرير أو الحمام اليوم؟</label>
+        <div class="radio-row" id="dp-phone">
+          <button class="rbtn sel" data-v="false" onclick="pickR('dp-phone',this)">لا</button>
+          <button class="rbtn" data-v="true" onclick="pickR('dp-phone',this)">نعم</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">أخطر وقت متوقع اليوم</label>
+        <div class="chip-grid" id="dp-dtime">
+          <button class="chip" data-v="الصباح"           onclick="dpChip('dp-dtime',this)">الصباح</button>
+          <button class="chip" data-v="الظهر"            onclick="dpChip('dp-dtime',this)">الظهر</button>
+          <button class="chip" data-v="المساء"           onclick="dpChip('dp-dtime',this)">المساء</button>
+          <button class="chip sel" data-v="الليل"        onclick="dpChip('dp-dtime',this)">الليل</button>
+          <button class="chip" data-v="بعد منتصف الليل" onclick="dpChip('dp-dtime',this)">بعد منتصف الليل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ Right column: top tasks + result + save ─ -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card">
+        <div class="sec-t"><i class="fas fa-list-check"></i>أهم 3 مهام اليوم</div>
+        <div class="dp-task-row">
+          <div class="dp-task-num">1</div>
+          <input class="fi" id="dp-task1" placeholder="المهمة الأولى...">
+        </div>
+        <div class="dp-task-row">
+          <div class="dp-task-num">2</div>
+          <input class="fi" id="dp-task2" placeholder="المهمة الثانية...">
+        </div>
+        <div class="dp-task-row">
+          <div class="dp-task-num">3</div>
+          <input class="fi" id="dp-task3" placeholder="المهمة الثالثة...">
+        </div>
+      </div>
+
+      <!-- Risk result card (shown after save) -->
+      <div id="dp-result-card" style="display:none"></div>
+
+      <button class="btn btn-blue btn-full btn-lg" onclick="saveDailyPlan()">
+        <i class="fas fa-sun"></i>بدأت يومي بوعي
+      </button>
+    </div>
+  </div>
+
+  <!-- Saved plan full summary -->
+  <div id="dp-saved-view" style="display:none;margin-top:24px"></div>
+
+  <!-- Protection Plan Card -->
+  <div id="dp-protection-card" style="display:none;margin-top:20px"></div>
+
+  <!-- Trigger Plan Card -->
+  <div id="dp-trigger-plan" style="display:none;margin-top:20px"></div>
+
+  <!-- Recovery Lock Plan Checklist -->
+  <div id="dp-recovery-lock-plan" style="display:none;margin-top:20px"></div>
+</section>
+
+<!-- ══ TASKS → DAILY ASSESSMENT ══ -->
+<section id="tasks" class="sec">
+  <div class="ph">
+    <h2>تقييم اليوم</h2>
+    <p>أجب بصدق — هذه الأسئلة تساعدك على فهم نفسك وتتبع تقدمك الحقيقي</p>
+  </div>
+
+  <!-- نتيجة التقييم -->
+  <div id="dassess-result-wrap"></div>
+
+  <!-- أسئلة التقييم حسب التصنيفات -->
+  <div id="dassess-questions-wrap"></div>
+
+  <!-- زر الحفظ -->
+  <div style="margin:4px 0 20px">
+    <button class="btn btn-blue btn-full btn-lg" onclick="saveDailyAssessment()">
+      <i class="fas fa-check-circle"></i>حفظ تقييم اليوم
+    </button>
+  </div>
+
+  <!-- إدارة أسئلة التقييم -->
+  <div class="card mt16">
+    <div class="fb mb12">
+      <div class="sec-t" style="margin-bottom:0"><i class="fas fa-sliders-h"></i>إدارة أسئلة التقييم</div>
+      <button class="btn btn-ghost" style="padding:8px 14px;font-size:13px" onclick="toggleDailyQMgr()">
+        <i class="fas fa-eye" id="dqmgr-toggle-icon"></i>&nbsp;<span id="dqmgr-toggle-text">عرض</span>
+      </button>
+    </div>
+    <div id="dqmgr-panel" style="display:none">
+      <div class="card mb16" style="background:rgba(255,255,255,.03)">
+        <div style="font-size:14px;font-weight:800;color:var(--t2);margin-bottom:14px"><i class="fas fa-plus" style="color:var(--blue)"></i> إضافة سؤال جديد</div>
+        <div class="fg">
+          <label class="fl">نص السؤال</label>
+          <input class="fi" id="ndq-text" placeholder="اكتب سؤالك هنا...">
+        </div>
+        <div class="fg">
+          <label class="fl">الوصف (اختياري)</label>
+          <input class="fi" id="ndq-desc" placeholder="وصف قصير للسؤال...">
+        </div>
+        <div class="g2">
+          <div class="fg">
+            <label class="fl">نوع الإجابة</label>
+            <select class="fs" id="ndq-type">
+              <option value="yesno">نعم / لا</option>
+              <option value="rating">تقييم 1–10</option>
+              <option value="short">كتابة قصيرة</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">التصنيف</label>
+            <select class="fs" id="ndq-category">
+              <option value="protection">حماية</option>
+              <option value="risk">خطر</option>
+              <option value="mood">مزاج</option>
+              <option value="body">جسد وطاقة</option>
+              <option value="progress">تقدم</option>
+              <option value="victory">انتصارات</option>
+            </select>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="fg">
+            <label class="fl">الإجابة الإيجابية</label>
+            <select class="fs" id="ndq-positive">
+              <option value="yes">نعم</option>
+              <option value="no">لا</option>
+              <option value="null">لا ينطبق</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">الوزن (1–3)</label>
+            <select class="fs" id="ndq-weight">
+              <option value="1">1 — عادي</option>
+              <option value="2">2 — مهم</option>
+              <option value="3">3 — حرج</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-blue btn-full" onclick="addDailyQuestion()">
+          <i class="fas fa-plus"></i>إضافة السؤال
+        </button>
+      </div>
+      <div id="dqmgr-list"></div>
+    </div>
+  </div>
+
+  <!-- عناصر المهام القديمة — مخفية للتوافق -->
+  <span id="tasks-pct" style="display:none">0%</span>
+  <div id="tasks-pb" style="display:none"></div>
+  <div id="all-tasks" style="display:none"></div>
+</section>
+
+<!-- ══ TIMELINE ══ -->
+<section id="timeline" class="sec">
+  <div class="ph"><h2>مسار رحلة التعافي</h2><p>كل محطة تجتازها هي انتصار حقيقي</p></div>
+  <div class="card"><div class="tl" id="tl-container"></div></div>
+</section>
+
+<!-- ══ JOURNAL ══ -->
+<section id="journal" class="sec">
+  <div class="ph"><h2>السجل اليومي</h2><p>الكتابة تساعدك على فهم نفسك وتجاوز اللحظات الصعبة</p></div>
+  <div class="g2">
+    <div class="card">
+      <div class="sec-t"><i class="fas fa-pen-nib"></i>تقرير اليوم</div>
+      <div class="fg">
+        <label class="fl">مستوى الرغبة اليوم (1–10)</label>
+        <div class="slider-row">
+          <input type="range" class="slider" id="j-urge" min="1" max="10" value="3" oninput="document.getElementById('j-uv').textContent=this.value">
+          <div class="slider-v" id="j-uv">3</div>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">المزاج العام</label>
+        <select class="fs" id="j-mood">
+          <option>نشيط</option><option>جيد</option><option>متوسط</option>
+          <option>سيئ</option><option>متوتر</option><option>حزين</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">هل شاهدت محتوى غير لائق؟</label>
+        <div class="radio-row" id="rg-watched">
+          <button class="rbtn sel" data-v="لا" onclick="pickR('rg-watched',this)">لا</button>
+          <button class="rbtn" data-v="نعم" onclick="pickR('rg-watched',this)">نعم</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">هل مارست السلوك؟</label>
+        <div class="radio-row" id="rg-did">
+          <button class="rbtn sel" data-v="لا" onclick="pickR('rg-did',this)">لا</button>
+          <button class="rbtn" data-v="نعم" onclick="pickR('rg-did',this)">نعم</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">أقوى محفز اليوم</label>
+        <input class="fi" id="j-trigger" placeholder="مثال: ملل، سهر، وحدة...">
+      </div>
+      <div class="fg">
+        <label class="fl">ماذا فعلت بدلاً من السلوك؟</label>
+        <input class="fi" id="j-alt" placeholder="مثال: مشيت، اتصلت بصديق...">
+      </div>
+      <div class="fg">
+        <label class="fl">ملاحظة اليوم</label>
+        <textarea class="ft" id="j-note" placeholder="اكتب ما تريد هنا..."></textarea>
+      </div>
+      <button class="btn btn-blue btn-full btn-lg" onclick="saveJournal()"><i class="fas fa-save"></i>حفظ تقرير اليوم</button>
+    </div>
+    <div>
+      <div class="sec-t"><i class="fas fa-history"></i>آخر التقارير</div>
+      <div id="j-entries"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<section id="stats" class="sec">
+  <div class="ph"><h2>الإحصائيات</h2><p>مركز التحليل الشامل لرحلتك</p></div>
+
+  <!-- ── الكروت الأساسية ── -->
+  <div class="g3 mb16">
+    <div class="sc"><div class="sc-ico">🌟</div><div class="sc-val" id="st-days">0</div><div class="sc-lbl">الأيام النظيفة الحالية</div></div>
+    <div class="sc"><div class="sc-ico">🏆</div><div class="sc-val" id="st-best">0</div><div class="sc-lbl">أفضل سلسلة نجاح</div></div>
+    <div class="sc"><div class="sc-ico">💪</div><div class="sc-val" id="st-urge">0</div><div class="sc-lbl">مرات مقاومة الرغبة</div></div>
+    <div class="sc"><div class="sc-ico">📋</div><div class="sc-val" id="st-journal">0</div><div class="sc-lbl">تقارير يومية مسجلة</div></div>
+    <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="st-tasks">0%</div><div class="sc-lbl">نسبة الالتزام بالمهام</div></div>
+    <div class="sc"><div class="sc-ico">🔥</div><div class="sc-val" id="st-trigger" style="font-size:20px">—</div><div class="sc-lbl">أكثر محفز متكرر</div></div>
+  </div>
+
+  <!-- ── الكروت الموسّعة ── -->
+  <div class="g3 mb24" id="st-ext-cards"></div>
+
+  <!-- ── ملخص ذكي ── -->
+  <div id="st-insight"></div>
+
+  <!-- ── موجة الأداء ── -->
+  <div id="st-wave"></div>
+
+  <!-- ── تحليل التحديات ── -->
+  <div id="st-challenges-wrap"></div>
+
+  <!-- ── تحليل الإنجاز اليومي ── -->
+  <div id="st-daily-ach"></div>
+
+  <!-- ── أقسام موجودة ── -->
+  <div id="st-smart-summary" class="mb24"></div>
+  <div id="st-recovery-lock" class="mb24"></div>
+  <div id="st-assessment-wrap" class="mb24"></div>
+  <div id="st-memoir-wrap" class="mb24"></div>
+
+  <!-- ── إعادة ضبط البيانات ── -->
+  <div class="card">
+    <div class="sec-t"><i class="fas fa-trash-alt tr2"></i>إعادة ضبط البيانات</div>
+    <p class="tm" style="font-size:14px;margin-bottom:16px">هذا سيحذف جميع بياناتك ويبدأ من الصفر.</p>
+    <button class="btn btn-red" onclick="resetAll()"><i class="fas fa-redo"></i>مسح جميع البيانات</button>
+  </div>
+</section>
+
+<!-- ══ RULES ══ -->
+<section id="rules" class="sec">
+  <div class="ph"><h2>قوانيني الشخصية</h2><p>درعك اليومي — راجعها كل صباح</p></div>
+  <div class="card">
+    <div class="sec-t"><i class="fas fa-shield-alt"></i>القواعد النشطة</div>
+    <div id="rules-list"></div>
+    <div class="add-row">
+      <input class="fi" id="new-rule" placeholder="أضف قاعدة جديدة...">
+      <button class="btn btn-blue" onclick="addRule()"><i class="fas fa-plus"></i>إضافة</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRIGGERS ══ -->
+<section id="triggers" class="sec">
+  <div class="ph">
+    <h2>محفزاتي</h2>
+    <p>خريطة رغباتك — اعرف عدوك لتهزمه</p>
+  </div>
+
+  <div id="triggers-empty" class="tri-empty" style="display:none">
+    <div style="font-size:52px;margin-bottom:16px">📊</div>
+    <p style="font-size:15px;font-weight:700;color:var(--t2);line-height:2">
+      ابدأ بتسجيل الرغبات من زر الطوارئ،<br>وبعد أيام ستظهر لك خريطة محفزاتك.
+    </p>
+    <button class="btn btn-blue mt24" onclick="openSOS()"><i class="fas fa-exclamation-triangle"></i>استخدم بروتوكول الطوارئ</button>
+  </div>
+
+  <div id="triggers-stats">
+    <div class="g3 mb24">
+      <div class="sc"><div class="sc-ico">🔥</div><div class="sc-val" id="tri-trigger" style="font-size:18px;word-break:break-all">—</div><div class="sc-lbl">أكثر محفز متكرر</div></div>
+      <div class="sc"><div class="sc-ico">📍</div><div class="sc-val" id="tri-location" style="font-size:18px">—</div><div class="sc-lbl">أخطر مكان</div></div>
+      <div class="sc"><div class="sc-ico">🕐</div><div class="sc-val" id="tri-time" style="font-size:18px">—</div><div class="sc-lbl">أكثر وقت تكررت فيه</div></div>
+      <div class="sc"><div class="sc-ico">✅</div><div class="sc-val" id="tri-fix" style="font-size:18px">—</div><div class="sc-lbl">أكثر حل نجح معي</div></div>
+      <div class="sc"><div class="sc-ico">📅</div><div class="sc-val" id="tri-weekly">0</div><div class="sc-lbl">مقاومة هذا الأسبوع</div></div>
+      <div class="sc"><div class="sc-ico">💪</div><div class="sc-val" id="tri-total">0</div><div class="sc-lbl">إجمالي مرات المقاومة</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-t"><i class="fas fa-bolt" style="color:var(--gold)"></i>مكتبة البدائل السريعة</div>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:16px">عندما تأتي الرغبة — اختر أي بديل وطبّقه الآن فوراً</p>
+    <div id="alts-list"></div>
+  </div>
+
+  <div id="tri-top-plan" style="margin-top:24px"></div>
+</section>
+
+<!-- ══ REASONS ══ -->
+<section id="reasons" class="sec">
+  <div class="ph">
+    <h2>لماذا أتعافى؟</h2>
+    <p>أسبابك هي وقودك — اقرأها كل يوم واجعلها بوصلتك</p>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="sec-t"><i class="fas fa-heart" style="color:var(--red)"></i>أسبابي الشخصية</div>
+      <div id="reasons-list"></div>
+      <div class="add-row mt16">
+        <input class="fi" id="new-reason" placeholder="أضف سبباً جديداً...">
+        <button class="btn btn-blue" onclick="addReason()"><i class="fas fa-plus"></i>إضافة</button>
+      </div>
+    </div>
+    <div>
+      <div class="card mb24">
+        <div class="sec-t"><i class="fas fa-star" style="color:var(--gold)"></i>سبب اليوم</div>
+        <div style="background:linear-gradient(135deg,rgba(167,139,250,.12),rgba(79,142,247,.08));border:1px solid rgba(167,139,250,.22);border-radius:16px;padding:28px;text-align:center">
+          <div style="font-size:38px;margin-bottom:12px">✨</div>
+          <div id="daily-reason" style="font-size:16px;font-weight:700;line-height:2;color:var(--t1)">...</div>
+        </div>
+        <p style="font-size:12px;color:var(--t3);text-align:center;margin-top:10px">يتغير يومياً من قائمتك الشخصية</p>
+      </div>
+      <div class="card">
+        <div class="sec-t"><i class="fas fa-info-circle" style="color:var(--blue)"></i>لماذا هذه الصفحة مهمة؟</div>
+        <p style="font-size:13px;color:var(--t2);line-height:2">
+          وجود سبب واضح للتعافي يساعدك على الثبات وقت الضعف، لأنك لا تعتمد على الحماس فقط بل على <strong style="color:var(--t1)">معنى شخصي واضح</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WEEKLY REVIEW ══ -->
+<section id="weeklyreview" class="sec">
+  <div class="ph">
+    <h2>مراجعة الأسبوع</h2>
+    <p>أسبوع كامل من التعلم — سجّله قبل أن تبدأ الأسبوع الجديد</p>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="sec-t"><i class="fas fa-pen-nib"></i>مراجعة هذا الأسبوع</div>
+      <div class="fg">
+        <label class="fl">أفضل إنجاز هذا الأسبوع</label>
+        <input class="fi" id="wr-achievement" placeholder="ما الشيء الذي تفخر به هذا الأسبوع؟">
+      </div>
+      <div class="fg">
+        <label class="fl">أصعب محفز هذا الأسبوع</label>
+        <input class="fi" id="wr-trigger" placeholder="ما الذي اختبرك أكثر شيء؟">
+      </div>
+      <div class="fg">
+        <label class="fl">أكثر وقت كان خطراً</label>
+        <div class="chip-grid" id="wr-time">
+          <button class="chip" data-v="الصباح"           onclick="dpChip('wr-time',this)">الصباح</button>
+          <button class="chip" data-v="الظهر"            onclick="dpChip('wr-time',this)">الظهر</button>
+          <button class="chip" data-v="المساء"           onclick="dpChip('wr-time',this)">المساء</button>
+          <button class="chip" data-v="الليل"            onclick="dpChip('wr-time',this)">الليل</button>
+          <button class="chip" data-v="بعد منتصف الليل" onclick="dpChip('wr-time',this)">بعد منتصف الليل</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">ما القاعدة التي أحتاج إضافتها؟</label>
+        <input class="fi" id="wr-newrule" placeholder="قاعدة جديدة لحمايتك الأسبوع القادم...">
+      </div>
+      <div class="fg">
+        <label class="fl">قرار الأسبوع القادم</label>
+        <textarea class="ft" id="wr-decision" rows="2" placeholder="التزام واحد محدد للأسبوع القادم..."></textarea>
+      </div>
+      <button class="btn btn-blue btn-full btn-lg" onclick="saveWeeklyReview()">
+        <i class="fas fa-save"></i>حفظ مراجعة الأسبوع
+      </button>
+    </div>
+    <div>
+      <div class="sec-t"><i class="fas fa-history"></i>آخر المراجعات</div>
+      <div id="wr-entries"><p class="tm" style="font-size:14px;text-align:center;padding:24px">لم تسجّل أي مراجعة بعد</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRIVACY & REPORTS ══ -->
+<section id="privacy" class="sec">
+  <div class="ph">
+    <h2>الخصوصية والتقارير</h2>
+    <p>بياناتك خاصة — تحكم في خصوصيتك وتقاريرك</p>
+  </div>
+
+  <div class="card mb24">
+    <div class="priv-section-hd"><i class="fas fa-user-shield"></i>مركز الخصوصية</div>
+
+    <div class="priv-row">
+      <div class="priv-row-info">
+        <div class="priv-row-lbl">وضع الخصوصية</div>
+        <div class="priv-row-sub">يستبدل الكلمات الحساسة بكلمات عامة في الواجهة</div>
+      </div>
+      <label class="priv-toggle">
+        <input type="checkbox" id="priv-mode-toggle" onchange="togglePrivacyMode(this.checked)">
+        <div class="priv-toggle-track"></div>
+        <div class="priv-toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="priv-row">
+      <div class="priv-row-info">
+        <div class="priv-row-lbl">زر الإخفاء السريع</div>
+        <div class="priv-row-sub">يضيف زراً ثابتاً لإخفاء الموقع سريعاً</div>
+      </div>
+      <label class="priv-toggle">
+        <input type="checkbox" id="priv-qh-toggle" onchange="toggleQuickHideEnabled(this.checked)">
+        <div class="priv-toggle-track"></div>
+        <div class="priv-toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="priv-row">
+      <div class="priv-row-info">
+        <div class="priv-row-lbl">قفل PIN</div>
+        <div class="priv-row-sub" id="pin-status-text">غير مفعّل — اضغط للتفعيل</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" style="padding:8px 14px;font-size:13px" id="pin-enable-btn" onclick="showSetPinModal()">
+          <i class="fas fa-lock"></i>تفعيل
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb24">
+    <div class="priv-section-hd"><i class="fas fa-database"></i>النسخ الاحتياطي والبيانات</div>
+    <p class="tm" style="font-size:13px;margin-bottom:16px;line-height:1.8">بياناتك محفوظة محلياً على جهازك فقط. استخدم التصدير لحفظها في مكان آمن.</p>
+
+    <button class="btn btn-blue btn-full mb16" onclick="exportBackup()">
+      <i class="fas fa-download"></i>تصدير نسخة احتياطية
+    </button>
+
+    <label class="priv-import-btn">
+      <i class="fas fa-upload"></i>
+      <span>استيراد نسخة احتياطية</span>
+      <input type="file" accept=".json" style="display:none" onchange="importBackup(this)">
+    </label>
+
+    <div class="divider"></div>
+
+    <button class="priv-danger-btn" onclick="resetAllSafe()">
+      <i class="fas fa-trash-alt"></i>مسح كل بيانات الموقع
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="priv-section-hd"><i class="fas fa-chart-line"></i>التقرير الأسبوعي الذكي</div>
+    <p class="tm" style="font-size:13px;margin-bottom:16px;line-height:1.8">يُولَّد محلياً من بياناتك — بدون إنترنت أو ذكاء اصطناعي خارجي.</p>
+
+    <button class="btn btn-blue btn-full mb16" onclick="generateAndShowReport()">
+      <i class="fas fa-bolt"></i>توليد تقرير هذا الأسبوع
+    </button>
+
+    <div id="swr-display"></div>
+
+    <div style="margin-top:24px">
+      <div class="sec-t" style="font-size:15px"><i class="fas fa-history"></i>التقارير السابقة</div>
+      <div id="swr-past-reports"><p class="tm" style="font-size:13px;text-align:center;padding:16px">لم تولّد أي تقارير بعد</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MEMOIRS ══ -->
+<section id="memoirs" class="sec">
+  <div class="ph">
+    <h2>مذكرات التعافي</h2>
+    <p>اكتب يومك بصدق، وأجب عن أسئلة تساعدك على فهم نفسك بدون جلد ذات.</p>
+  </div>
+
+  <div class="card mb24">
+    <div class="fb mb16">
+      <div class="sec-t" style="margin-bottom:0"><i class="fas fa-feather-alt"></i>مذكرة اليوم</div>
+      <button class="btn btn-ghost" style="padding:8px 14px;font-size:13px" onclick="startNewMemoir()">
+        <i class="fas fa-plus"></i>مذكرة جديدة
+      </button>
+    </div>
+    <div class="fg">
+      <label class="fl">عنوان المذكرة</label>
+      <input class="fi" id="memo-title" placeholder="عنوان قصير لليوم...">
+    </div>
+    <div class="fg">
+      <label class="fl">اكتب مذكرتك</label>
+      <textarea class="ft" id="memo-body" rows="6" style="min-height:140px" placeholder="اكتب ماذا حدث اليوم... ما الذي شعرت به؟ ما اللحظة الأخطر؟ ما الشيء الذي تعلمته؟"></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">ملخص قصير</label>
+      <textarea class="ft" id="memo-summary" rows="2" placeholder="اكتب خلاصة اليوم بسطرين..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:0">
+      <button class="btn btn-blue btn-full btn-lg" style="flex:1" onclick="saveMemoirEntry()">
+        <i class="fas fa-save"></i>حفظ مذكرة اليوم
+      </button>
+      <button class="btn btn-ghost" style="padding:12px 16px;font-size:13px;white-space:nowrap" onclick="importDailyAssessmentIntoMemoir()" title="استيراد تقييم اليوم إلى الملخص">
+        <i class="fas fa-file-import"></i>استيراد تقييم
+      </button>
+    </div>
+    <div id="memoir-analysis-result" style="display:none"></div>
+  </div>
+
+  <div class="card mb24">
+    <div class="sec-t"><i class="fas fa-clipboard-list"></i>أسئلة اليوم</div>
+    <div id="memoir-questions-list"></div>
+  </div>
+
+  <div class="card mb24">
+    <div class="fb mb12">
+      <div class="sec-t" style="margin-bottom:0"><i class="fas fa-sliders-h"></i>إدارة الأسئلة</div>
+      <button class="btn btn-ghost" style="padding:8px 14px;font-size:13px" onclick="toggleQMgr()">
+        <i class="fas fa-eye" id="qmgr-toggle-icon"></i>&nbsp;<span id="qmgr-toggle-text">عرض</span>
+      </button>
+    </div>
+    <div id="qmgr-panel" style="display:none">
+      <div class="card mb16" style="background:rgba(255,255,255,.03)">
+        <div style="font-size:14px;font-weight:800;color:var(--t2);margin-bottom:14px"><i class="fas fa-plus" style="color:var(--blue)"></i> إضافة سؤال جديد</div>
+        <div class="fg">
+          <label class="fl">نص السؤال</label>
+          <input class="fi" id="nq-text" placeholder="اكتب سؤالك هنا...">
+        </div>
+        <div class="g2">
+          <div class="fg">
+            <label class="fl">نوع الإجابة</label>
+            <select class="fs" id="nq-type">
+              <option value="yesno">نعم / لا</option>
+              <option value="rating">تقييم 1–10</option>
+              <option value="short">كتابة قصيرة</option>
+              <option value="long">كتابة أطول</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">التصنيف</label>
+            <select class="fs" id="nq-category">
+              <option value="risk">خطر</option>
+              <option value="mood">مزاج</option>
+              <option value="protection">حماية</option>
+              <option value="reflection">تأمل</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-blue btn-full" onclick="addMemoirQuestion()">
+          <i class="fas fa-plus"></i>إضافة السؤال
+        </button>
+      </div>
+      <div id="qmgr-list"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-t"><i class="fas fa-archive"></i>أرشيف المذكرات</div>
+    <div id="memoir-archive"></div>
+  </div>
+</section>
+
+<!-- ══ BACKUP ══ -->
+<section id="backup" class="sec">
+  <div class="ph">
+    <h2>النسخ الاحتياطي</h2>
+    <p>احفظ بياناتك واستعدّ لأي طارئ — بياناتك لا تُغادر جهازك</p>
+  </div>
+
+  <!-- تصدير -->
+  <div class="card mb20">
+    <div class="bk-section-hd"><i class="fas fa-download" style="color:var(--green)"></i>تصدير البيانات</div>
+    <p class="bk-desc">يُصدَّر ملف JSON يحتوي على جميع بياناتك. احفظه في مكان آمن وستستطيع استعادة كل شيء لاحقاً أو نقله لجهاز آخر.</p>
+    <div class="bk-actions">
+      <button class="btn btn-green bk-btn" onclick="exportBackup()">
+        <i class="fas fa-download"></i>تصدير كملف JSON
+      </button>
+      <button class="btn btn-ghost bk-btn" onclick="copyBackupToClipboard()">
+        <i class="fas fa-clipboard"></i>نسخ إلى الحافظة
+      </button>
+    </div>
+  </div>
+
+  <!-- استيراد -->
+  <div class="card mb20">
+    <div class="bk-section-hd"><i class="fas fa-upload" style="color:var(--blue)"></i>استيراد البيانات</div>
+    <p class="bk-desc">اختر ملف JSON صادر من هذا التطبيق لاستعادة بياناتك. سيطلب التطبيق تأكيدك قبل أي تغيير.</p>
+    <div class="bk-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>تحذير: الاستيراد سيستبدل البيانات الحالية بالبيانات الموجودة في الملف. تأكد من تصدير نسخة احتياطية أولاً إذا أردت الحفاظ على بياناتك الحالية.</span>
+    </div>
+    <label class="bk-import-label">
+      <i class="fas fa-folder-open"></i>
+      <span>اختر ملف النسخة الاحتياطية</span>
+      <input type="file" accept=".json" style="display:none" onchange="importBackup(this)">
+    </label>
+  </div>
+
+  <!-- حالة البيانات الحالية -->
+  <div class="card mb20">
+    <div class="bk-section-hd"><i class="fas fa-info-circle" style="color:var(--blue)"></i>حالة البيانات المحفوظة حالياً</div>
+    <div id="backup-status"></div>
+  </div>
+
+  <!-- تثبيت PWA -->
+  <div class="card" id="pwa-install-card" style="display:none">
+    <div class="bk-section-hd"><i class="fas fa-mobile-alt" style="color:var(--purple)"></i>تثبيت التطبيق</div>
+    <p class="bk-desc">يمكنك تثبيت هذا التطبيق على هاتفك أو حاسوبك مثل أي تطبيق عادي — يعمل بدون إنترنت بعد التثبيت.</p>
+    <div class="bk-actions">
+      <button class="btn btn-blue bk-btn" id="pwa-install-btn" onclick="triggerPwaInstall()">
+        <i class="fas fa-download"></i>تثبيت التطبيق الآن
+      </button>
+    </div>
+    <p style="font-size:12px;color:var(--t3);margin-top:12px;line-height:1.8">
+      إذا لم يظهر الزر، افتح المتصفح واختر:<br>
+      <strong style="color:var(--t2)">القائمة ← إضافة إلى الشاشة الرئيسية</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ══ CHALLENGES ══ -->
+<section id="challenges" class="sec">
+
+  <!-- ── Page Header ── -->
+  <div class="ph ch-ph">
+    <div class="ch-ph-left">
+      <h2><span class="ch-ph-icon">🏆</span>التحديات</h2>
+      <p>ضع هدفاً، التزم يوماً بيوم، وانتصر على نفسك</p>
+    </div>
+    <button class="btn btn-primary ch-add-btn" onclick="document.getElementById('ch-form-card').scrollIntoView({behavior:'smooth'});if(!chFormOpen)toggleChallengeForm()">
+      <i class="fas fa-plus"></i>تحدي جديد
+    </button>
+  </div>
+
+  <!-- ── Page Stats ── -->
+  <div id="ch-page-stats"></div>
+
+  <!-- ── Filter + Sort Toolbar ── -->
+  <div class="ch-toolbar mb20" id="ch-toolbar">
+    <div class="ch-filters" id="ch-filter-bar">
+      <button class="ch-filter-btn ch-filter-active" data-filter="all"   onclick="setChallengeFilter('all')">الكل</button>
+      <button class="ch-filter-btn" data-filter="active"    onclick="setChallengeFilter('active')">🔥 نشط</button>
+      <button class="ch-filter-btn" data-filter="completed" onclick="setChallengeFilter('completed')">✅ مكتمل</button>
+      <button class="ch-filter-btn" data-filter="stopped"   onclick="setChallengeFilter('stopped')">⏸ متوقف</button>
+    </div>
+    <select class="ch-sort-sel" id="ch-sort-select" onchange="setChallengeSort(this.value)">
+      <option value="newest">الأحدث أولاً</option>
+      <option value="progress_hi">الأعلى تقدماً</option>
+      <option value="progress_lo">الأقل تقدماً</option>
+      <option value="closest">الأقرب للاكتمال</option>
+    </select>
+  </div>
+
+  <!-- ── Challenges List ── -->
+  <div id="ch-list"></div>
+
+  <!-- ── Empty State ── -->
+  <div id="ch-empty" style="display:none">
+    <div class="ch-empty-state">
+      <div class="ch-empty-icon">🚀</div>
+      <div class="ch-empty-title">لا يوجد تحدي بعد</div>
+      <p class="ch-empty-sub">ابدأ تحديك الأول — 30 يوماً، 90 يوماً، أو أي هدف تختاره</p>
+      <button class="btn btn-primary btn-lg" onclick="document.getElementById('ch-form-card').scrollIntoView({behavior:'smooth'});if(!chFormOpen)toggleChallengeForm()">
+        <i class="fas fa-rocket"></i>أطلق تحديك الأول
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Add Challenge Form (at bottom) ── -->
+  <div class="card ch-form-card" id="ch-form-card">
+    <div class="ch-form-hd">
+      <div class="ch-form-hd-left">
+        <span class="ch-form-hd-icon">✨</span>
+        <span class="ch-form-hd-title">تحدي جديد</span>
+      </div>
+      <button class="ch-form-toggle" onclick="toggleChallengeForm()" aria-label="طي النموذج">
+        <i class="fas fa-chevron-up" id="ch-form-icon"></i>
+      </button>
+    </div>
+    <div id="ch-form-body">
+      <div class="g2">
+        <div class="fg">
+          <label class="fl">اسم التحدي</label>
+          <input class="fi" id="ch-name" placeholder="مثال: تحدي 30 يوم بلا سوشيال ميديا">
+        </div>
+        <div class="fg">
+          <label class="fl">نوع التحدي</label>
+          <select class="fs" id="ch-type">
+            <option value="build">💪 بناء عادة</option>
+            <option value="quit">🚫 ترك عادة</option>
+            <option value="general">🎯 تحدي عام</option>
+          </select>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="fg">
+          <label class="fl">عدد أيام التحدي</label>
+          <input class="fi" id="ch-days" type="number" min="1" max="365" placeholder="30">
+        </div>
+        <div class="fg">
+          <label class="fl">تاريخ البداية</label>
+          <input class="fi" id="ch-start" type="date">
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">ملاحظات (اختياري)</label>
+        <textarea class="ft" id="ch-notes" rows="2" placeholder="لماذا هذا التحدي مهم لك؟"></textarea>
+      </div>
+      <button class="btn btn-primary btn-full btn-lg ch-submit-btn" onclick="addChallenge()">
+        <i class="fas fa-rocket"></i>إطلاق التحدي
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     CALENDAR PAGE
+     ══════════════════════════════════════ -->
+<section id="calendar" class="sec">
+  <div class="ph">
+    <h2><i class="fas fa-calendar-days" style="color:var(--blue);margin-left:10px"></i>الكالندر</h2>
+    <p>راقب أيامك ونسبة إنجازك يوماً بيوم</p>
+  </div>
+
+  <!-- summary cards -->
+  <div id="cal-summary"></div>
+
+  <!-- month nav -->
+  <div class="cal-nav card mb20">
+    <button class="cal-nav-btn" onclick="calPrevMonth()"><i class="fas fa-chevron-right"></i></button>
+    <div class="cal-nav-mid">
+      <span class="cal-month-hd" id="cal-month-hd"></span>
+      <button class="cal-today-btn" onclick="calGoToday()">اليوم</button>
+    </div>
+    <button class="cal-nav-btn" onclick="calNextMonth()"><i class="fas fa-chevron-left"></i></button>
+  </div>
+
+  <!-- grid -->
+  <div class="card cal-grid-card mb20" id="cal-grid"></div>
+
+  <!-- day detail -->
+  <div id="cal-day-detail" style="display:none"></div>
+
+  <!-- legend -->
+  <div class="cal-legend card">
+    <span class="cal-leg-item"><span class="cal-leg-dot cal-day-great"></span>ممتاز ≥75%</span>
+    <span class="cal-leg-item"><span class="cal-leg-dot cal-day-good"></span>جيد 50–74%</span>
+    <span class="cal-leg-item"><span class="cal-leg-dot cal-day-weak"></span>ضعيف 25–49%</span>
+    <span class="cal-leg-item"><span class="cal-leg-dot cal-day-bad"></span>صعب &lt;25%</span>
+    <span class="cal-leg-item"><span class="cal-leg-dot cal-day-nodata"></span>لا بيانات</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     EVALUATIONS PAGE
+     ══════════════════════════════════════ -->
+<section id="evaluations" class="sec">
+  <div class="ph">
+    <h2><i class="fas fa-chart-line" style="color:var(--purple);margin-left:10px"></i>التقييمات</h2>
+    <p>راقب تطور إنجازك ومؤشراتك عبر الأيام</p>
+  </div>
+
+  <!-- period filter -->
+  <div class="eval-period-bar mb20">
+    <button class="eval-period-btn" data-period="7"  onclick="setEvalPeriod(7)">7 أيام</button>
+    <button class="eval-period-btn eval-period-active" data-period="30" onclick="setEvalPeriod(30)">30 يوم</button>
+    <button class="eval-period-btn" data-period="0"  onclick="setEvalPeriod(0)">هذا الشهر</button>
+    <button class="eval-period-btn" data-period="-1" onclick="setEvalPeriod(-1)">كل البيانات</button>
+  </div>
+
+  <!-- overall summary -->
+  <div id="eval-summary"></div>
+
+  <!-- metric cards -->
+  <div class="eval-metrics-hd mb12"><i class="fas fa-sliders-h" style="color:var(--blue)"></i> المؤشرات — اضغط لعرض الرسم</div>
+  <div id="eval-metrics" class="eval-metrics-list mb20"></div>
+
+  <!-- selected metric detail + chart -->
+  <div id="eval-detail" style="display:none"></div>
+</section>
+
+</main>
+</div>
+
+<!-- ── MEMOIR VIEW MODAL ── -->
+<div class="overlay" id="memoir-view-overlay">
+  <div class="memoir-view-modal">
+    <button class="modal-x" onclick="closeMemoirView()"><i class="fas fa-times"></i></button>
+    <div id="memoir-view-content"></div>
+  </div>
+</div>
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="bnav">
+  <div class="bnav-inner">
+    <button class="bnav-btn active" data-sec="dashboard"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+    <button class="bnav-btn" data-sec="triggers"><i class="fas fa-fire-flame-curved"></i><span>محفزاتي</span></button>
+    <button class="bnav-btn" onclick="openSOS()"><i class="fas fa-exclamation-triangle" style="color:var(--red)"></i><span style="color:var(--red)">طوارئ</span></button>
+    <button class="bnav-btn" data-sec="weeklyreview"><i class="fas fa-calendar-week"></i><span>المراجعة</span></button>
+    <button class="bnav-btn" data-sec="journal"><i class="fas fa-book-open"></i><span>السجل</span></button>
+  </div>
+</nav>
+
+<!-- ── SOS MODAL ── -->
+<div class="overlay" id="sos-overlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeSOS()"><i class="fas fa-times"></i></button>
+
+    <div class="sos-reason-banner">
+      <i class="fas fa-star"></i>
+      <span id="sos-reason-text"></span>
+    </div>
+
+    <div class="sos-phases-bar">
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="sos-ph-dot active" id="ph-dot-1">1</div>
+        <div class="sos-ph-label">توقف</div>
+      </div>
+      <div class="sos-ph-line" id="ph-line-1"></div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="sos-ph-dot" id="ph-dot-2">2</div>
+        <div class="sos-ph-label">غيّر</div>
+      </div>
+      <div class="sos-ph-line" id="ph-line-2"></div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="sos-ph-dot" id="ph-dot-3">3</div>
+        <div class="sos-ph-label">تحرك</div>
+      </div>
+      <div class="sos-ph-line" id="ph-line-3"></div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="sos-ph-dot" id="ph-dot-4">4</div>
+        <div class="sos-ph-label">فكك</div>
+      </div>
+    </div>
+
+    <!-- المرحلة 1 -->
+    <div class="sos-phase" id="sos-phase-1">
+      <div class="sos-phase-title">
+        <h2>توقف الآن. لا تتحرك مع الرغبة.</h2>
+        <p>أول 10 ثواني هي الأهم — اثبت مكانك</p>
+      </div>
+      <div class="sos-steps-list">
+        <div class="sos-step-row"><span class="sos-step-icon">📵</span><span>ضع الهاتف وجهاً لأسفل</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">😌</span><span>أغمض عينيك</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">🌬️</span><span>خذ نفساً عميقاً</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">💬</span><span>قل لنفسك: هذه موجة وستمر</span></div>
+      </div>
+      <button class="btn btn-blue btn-full btn-lg" onclick="sosMoveToPhase(2)">
+        <i class="fas fa-arrow-left"></i>انتقلت للخطوة التالية
+      </button>
+    </div>
+
+    <!-- المرحلة 2 -->
+    <div class="sos-phase" id="sos-phase-2" style="display:none">
+      <div class="sos-phase-title">
+        <h2>غيّر مكانك فوراً</h2>
+        <p>أول دقيقة — اكسر بيئة الرغبة</p>
+      </div>
+      <div class="timer" id="sos-timer-2">60</div>
+      <div class="sos-steps-list">
+        <div class="sos-step-row"><span class="sos-step-icon">🚶</span><span>قم من مكانك</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">🚪</span><span>اخرج من الغرفة</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">💦</span><span>اغسل وجهك أو توضأ</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">💧</span><span>اشرب ماء</span></div>
+      </div>
+      <button class="btn btn-blue btn-full btn-lg" onclick="sosMoveToPhase(3)">
+        <i class="fas fa-arrow-left"></i>أنا الآن في مكان جديد
+      </button>
+    </div>
+
+    <!-- المرحلة 3 -->
+    <div class="sos-phase" id="sos-phase-3" style="display:none">
+      <div class="sos-phase-title">
+        <h2>حرّك جسدك لتغيير الحالة</h2>
+        <p>خلال 5 دقائق — الجسم يكسر الرغبة</p>
+      </div>
+      <div class="timer" id="sos-timer-3">5:00</div>
+      <div class="sos-steps-list">
+        <div class="sos-step-row"><span class="sos-step-icon">💪</span><span>20 تمرين ضغط أو قرفصاء</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">🚶</span><span>مشي 5 دقائق</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">🌬️</span><span>تنفس ببطء</span></div>
+        <div class="sos-step-row"><span class="sos-step-icon">🤐</span><span>لا تناقش الرغبة</span></div>
+      </div>
+      <button class="btn btn-blue btn-full btn-lg" onclick="sosMoveToPhase(4)">
+        <i class="fas fa-check"></i>أكملت الحركة
+      </button>
+    </div>
+
+    <!-- المرحلة 4 -->
+    <div class="sos-phase" id="sos-phase-4" style="display:none">
+      <div class="sos-phase-title">
+        <h2>فكك الوهم</h2>
+        <p>إذا استمرت الرغبة — واجهها بالحقيقة</p>
+      </div>
+      <div class="fg mt16">
+        <label class="fl">ماذا سأشعر بعد الاستسلام؟</label>
+        <textarea class="ft" id="sos-feel-after" rows="2" placeholder="اكتب بصدق..."></textarea>
+      </div>
+      <div class="fg">
+        <label class="fl">ماذا سأشعر إذا قاومت الآن؟</label>
+        <textarea class="ft" id="sos-feel-resist" rows="2" placeholder="اكتب هذا الشعور..."></textarea>
+      </div>
+      <button class="btn btn-green btn-full btn-lg mt8" onclick="sosShowLogForm()">
+        <i class="fas fa-fist-raised"></i>تجاوزت الرغبة
+      </button>
+    </div>
+
+    <!-- نموذج التسجيل -->
+    <div class="sos-phase" id="sos-log-form" style="display:none">
+      <div class="sos-phase-title">
+        <h2 style="color:var(--green)">سجّل انتصارك</h2>
+        <p>هذه المعلومات ستساعدك في المستقبل</p>
+      </div>
+      <div class="fg mt16">
+        <label class="fl">المكان الحالي</label>
+        <div class="chip-grid" id="log-location">
+          <button class="chip" onclick="logChip('log-location',this)">السرير</button>
+          <button class="chip" onclick="logChip('log-location',this)">الحمام</button>
+          <button class="chip" onclick="logChip('log-location',this)">الغرفة</button>
+          <button class="chip" onclick="logChip('log-location',this)">العمل</button>
+          <button class="chip" onclick="logChip('log-location',this)">السيارة</button>
+          <button class="chip" onclick="logChip('log-location',this)">مكان آخر</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">المحفز الأقرب</label>
+        <div class="chip-grid" id="log-trigger">
+          <button class="chip" onclick="logChip('log-trigger',this)">ملل</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">سهر</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">وحدة</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">توتر</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">حزن</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">غضب</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">فضول</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">تعب</button>
+          <button class="chip" onclick="logChip('log-trigger',this)">سوشيال ميديا</button>
+        </div>
+      </div>
+      <div id="sos-trigger-plan" style="display:none"></div>
+
+      <div class="fg">
+        <label class="fl">ما الخطوة التي ساعدتني؟</label>
+        <div class="chip-grid" id="log-fix">
+          <button class="chip" onclick="logChip('log-fix',this)">تغيير المكان</button>
+          <button class="chip" onclick="logChip('log-fix',this)">ماء بارد</button>
+          <button class="chip" onclick="logChip('log-fix',this)">رياضة</button>
+          <button class="chip" onclick="logChip('log-fix',this)">تنفس</button>
+          <button class="chip" onclick="logChip('log-fix',this)">اتصال بشخص</button>
+          <button class="chip" onclick="logChip('log-fix',this)">إغلاق الهاتف</button>
+          <button class="chip" onclick="logChip('log-fix',this)">غير ذلك</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">كلمة شكر لنفسي</label>
+        <input class="fi" id="log-self-thanks" placeholder="اكتب كلمة شكر لنفسك...">
+      </div>
+      <button class="btn btn-green btn-full btn-lg mt8" onclick="saveUrgeLog()">
+        <i class="fas fa-save"></i>حفظ وإغلاق
+      </button>
+    </div>
+
+    <!-- رسالة الانتصار -->
+    <div class="sos-victory-msg" id="sos-victory">
+      <div style="font-size:52px;margin-bottom:12px">🏆</div>
+      <div style="font-size:22px;font-weight:900;color:var(--green);margin-bottom:10px">هذا انتصار حقيقي.</div>
+      <div style="font-size:15px;color:var(--t2);line-height:1.8">لقد اخترت نفسك.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── RELAPSE MODAL ── -->
+<div class="overlay" id="relapse-overlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeRelapse()"><i class="fas fa-times"></i></button>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:48px;margin-bottom:10px">🌱</div>
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:8px">لحظة تأمل هادئة</h2>
+      <p style="color:var(--t2);font-size:14px;line-height:1.8">الانتكاسة ليست نهاية الرحلة.<br>هي معلومة تساعدك على فهم نفسك أكثر.</p>
+    </div>
+    <div class="fg">
+      <label class="fl">متى حدثت؟</label>
+      <select class="fs" id="r-when"><option>الصباح</option><option>الظهر</option><option>المساء</option><option>الليل</option><option>منتصف الليل</option></select>
+    </div>
+    <div class="fg">
+      <label class="fl">السبب الأقرب</label>
+      <select class="fs" id="r-reason">
+        <option>ملل</option><option>توتر</option><option>وحدة</option><option>سهر</option>
+        <option>تعب</option><option>حزن</option><option>غضب</option><option>فضول</option><option>أسباب أخرى</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">ما الشعور قبلها؟</label>
+      <input class="fi" id="r-feel" placeholder="صف شعورك قبل الحدث...">
+    </div>
+    <div class="fg">
+      <label class="fl">ما الشيء الذي ستغيره غداً؟</label>
+      <input class="fi" id="r-change" placeholder="خطوة واحدة صغيرة مختلفة...">
+    </div>
+    <div style="background:rgba(67,217,141,.07);border:1px solid rgba(67,217,141,.18);border-radius:16px;padding:18px;margin-bottom:20px;text-align:center">
+      <p style="font-size:14px;color:var(--t2);line-height:1.9">
+        "انهض الآن وخذ خطوة صغيرة.<br>أنت لم تفشل — أنت تتعلم."
+      </p>
+    </div>
+    <button class="btn btn-blue btn-full btn-lg" onclick="saveRelapse()">
+      <i class="fas fa-redo"></i>أعيد ضبط العداد وأبدأ من جديد
+    </button>
+  </div>
+</div>
+
+<!-- ── QUICK HIDE OVERLAY ── -->
+<div class="qh-overlay" id="qh-overlay">
+  <div class="qh-header">
+    <div>
+      <h1>لوحة المهام</h1>
+      <p>نظّم يومك وزد إنتاجيتك</p>
+    </div>
+    <button class="qh-show-btn" onclick="quickShow()"><i class="fas fa-eye"></i> عودة</button>
+  </div>
+  <div class="qh-grid">
+    <div class="qh-card">
+      <div class="qh-card-ico">✅</div>
+      <div class="qh-card-t">مهام اليوم</div>
+      <div class="qh-item"></div>
+      <div class="qh-item" style="width:80%"></div>
+      <div class="qh-item" style="width:60%"></div>
+    </div>
+    <div class="qh-card">
+      <div class="qh-card-ico">📝</div>
+      <div class="qh-card-t">ملاحظات</div>
+      <div class="qh-item"></div>
+      <div class="qh-item" style="width:75%"></div>
+      <div class="qh-item" style="width:50%"></div>
+    </div>
+    <div class="qh-card">
+      <div class="qh-card-ico">⏱️</div>
+      <div class="qh-card-t">عداد تركيز</div>
+      <div class="qh-timer-display" id="qh-timer-disp">25:00</div>
+      <div class="qh-focus-bar"><div class="qh-focus-fill" id="qh-focus-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PIN LOCK OVERLAY ── -->
+<div class="pin-overlay" id="pin-overlay">
+  <div class="pin-ico">🔐</div>
+  <div class="pin-title">رحلة التعافي</div>
+  <div class="pin-sub">أدخل رمز الدخول<br><span style="font-size:12px;color:var(--t3)">للخصوصية البسيطة فقط</span></div>
+  <div class="pin-inputs">
+    <input class="pin-digit" id="pin-d1" maxlength="1" inputmode="numeric" type="password" oninput="pinInput(this,1)">
+    <input class="pin-digit" id="pin-d2" maxlength="1" inputmode="numeric" type="password" oninput="pinInput(this,2)">
+    <input class="pin-digit" id="pin-d3" maxlength="1" inputmode="numeric" type="password" oninput="pinInput(this,3)">
+    <input class="pin-digit" id="pin-d4" maxlength="1" inputmode="numeric" type="password" oninput="pinInput(this,4)">
+  </div>
+  <div class="pin-error" id="pin-error"></div>
+  <button class="btn btn-ghost" onclick="document.getElementById('pin-overlay').classList.remove('open')" style="margin-top:4px">
+    تجاهل (بدون قفل)
+  </button>
+</div>
+
+<!-- ── SET PIN MODAL ── -->
+<div class="overlay" id="set-pin-overlay">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-x" onclick="closeSetPinModal()"><i class="fas fa-times"></i></button>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:42px;margin-bottom:10px">🔐</div>
+      <h2 style="font-size:20px;font-weight:900">تعيين رمز PIN</h2>
+      <p style="color:var(--t2);font-size:13px;line-height:1.8;margin-top:8px">للخصوصية البسيطة فقط<br>ليس حماية أمنية كاملة</p>
+    </div>
+    <div class="fg">
+      <label class="fl">الرمز الجديد (4 أرقام)</label>
+      <div class="pin-inputs" style="justify-content:center;margin:8px 0 16px">
+        <input class="pin-digit" id="np-d1" maxlength="1" inputmode="numeric" type="password" oninput="newPinInput(this,1)">
+        <input class="pin-digit" id="np-d2" maxlength="1" inputmode="numeric" type="password" oninput="newPinInput(this,2)">
+        <input class="pin-digit" id="np-d3" maxlength="1" inputmode="numeric" type="password" oninput="newPinInput(this,3)">
+        <input class="pin-digit" id="np-d4" maxlength="1" inputmode="numeric" type="password" oninput="newPinInput(this,4)">
+      </div>
+    </div>
+    <div class="pin-error" id="set-pin-error" style="margin-bottom:12px"></div>
+    <button class="btn btn-blue btn-full btn-lg" onclick="setPin()"><i class="fas fa-lock"></i>حفظ الرمز</button>
+  </div>
+</div>
+
+<!-- ── SCRIPTS (load order matters) ── -->
+<script src="js/constants.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/day-plan.js"></script>
+<script src="js/sos.js"></script>
+<script src="js/triggers.js"></script>
+<script src="js/recovery-lock.js"></script>
+<script src="js/privacy.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/memoirs.js"></script>
+<script src="js/daily-assessment.js"></script>
+<script src="js/journal.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/reasons.js"></script>
+<script src="js/weekly-review.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/challenges.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/evaluations.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

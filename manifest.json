@@ -1,0 +1,31 @@
+{
+  "name": "رحلة التعافي",
+  "short_name": "التعافي",
+  "description": "تطبيق متابعة رحلة التعافي اليومية — سجّل أيامك، قاوم الرغبات، وابنِ نفسك",
+  "start_url": "/recovery-journey/",
+  "scope": "/recovery-journey/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "theme_color": "#1e1b4b",
+  "background_color": "#13111e",
+  "categories": ["health", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "الرئيسية",
+      "short_name": "الرئيسية",
+      "url": "/recovery-journey/",
+      "description": "لوحة التحكم الرئيسية"
+    }
+  ]
+}
